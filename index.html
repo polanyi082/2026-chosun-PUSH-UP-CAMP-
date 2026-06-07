@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>조선대학교 PUSH 業 진로취업캠프 - 몸으로 말해요</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            background-color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Noto Sans KR', sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        #slide-container {
+            width: 100vw;
+            height: 56.25vw;
+            max-height: 100vh;
+            max-width: 177.78vh;
+            background-color: #0a0a0a;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 50px rgba(0,0,0,1);
+            overflow: hidden;
+            transition: opacity 0.3s ease;
+        }
+
+        #slide-container::after {
+            content: '';
+            position: absolute;
+            bottom: 5%;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 157, 0.4), transparent);
+        }
+
+        h1, h2, h3, p { margin: 0; color: #ffffff; }
+        .text-accent { color: #00FF9D; }
+
+        .full-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+        .full-bg::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(10, 10, 10, 0.85);
+            z-index: 2;
+        }
+        
+        .content-layer {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            width: 100%;
+            padding: 0 5%;
+        }
+
+        .title-main { font-size: 8vw; font-weight: 900; letter-spacing: -2px; margin-bottom: 2vh; text-shadow: 0 0 30px rgba(0, 255, 157, 0.4); }
+        .title-sub { color: #cccccc; font-size: 2vw; font-weight: 400; letter-spacing: 2px; line-height: 1.5; }
+
+        .section-title { font-size: 7vw; font-weight: 900; margin-bottom: 3vh; }
+        .section-desc { color: #dddddd; font-size: 2.2vw; font-weight: 400; line-height: 1.6; word-break: keep-all;}
+        .divider { width: 100px; height: 6px; background-color: #00FF9D; margin: 4vh auto; border-radius: 3px; }
+
+        .game-label {
+            position: absolute;
+            top: 6%;
+            left: 6%;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 10;
+        }
+        .team-badge {
+            background-color: #00FF9D;
+            color: #0a0a0a;
+            font-size: 2.5vw;
+            font-weight: 900;
+            padding: 8px 24px;
+            border-radius: 10px;
+        }
+        .label-divider { color: #555555; font-size: 2.5vw; font-weight: 400; }
+        .category-text { color: #ffffff; font-size: 2.5vw; font-weight: 700; }
+
+        .keyword-text {
+            color: #ffffff;
+            font-weight: 900;
+            letter-spacing: -3px;
+            line-height: 1.2;
+            text-align: center;
+            word-break: keep-all;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            opacity: 0.3;
+            transition: opacity 0.3s;
+        }
+        .controls:hover { opacity: 1; }
+        .btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: #00FF9D; color: #000; border-color: #00FF9D; }
+        .counter { color: #888; font-size: 18px; margin-right: 10px; font-weight: 700; }
+        
+        .nav-hint {
+            position: absolute;
+            bottom: 5%;
+            width: 100%;
+            text-align: center;
+            color: #555;
+            font-size: 1.2vw;
+            z-index: 5;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; }
+            50% { opacity: 0.8; }
+            100% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="slide-container">
+</div>
+
+<div class="controls">
+    <div class="counter" id="slide-counter">1 / 100</div>
+    <button class="btn" onclick="prevSlide()" title="이전 슬라이드 (좌측 방향키)"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="btn" onclick="nextSlide()" title="다음 슬라이드 (우측 방향키 또는 스페이스바)"><i class="fa-solid fa-chevron-right"></i></button>
+    <button class="btn" onclick="toggleFullScreen()" title="전체화면 전환"><i class="fa-solid fa-expand"></i></button>
+</div>
+
+<script>
+    const rawData = `
+1팀|영화|기생충
+1팀|영화|부산행
+1팀|영화|겨울왕국
+1팀|드라마|오징어 게임
+1팀|드라마|이상한 변호사 우영우
+1팀|드라마|도깨비
+1팀|배우|마동석
+1팀|배우|이병헌
+1팀|배우|황정민
+1팀|가수/아이돌|뉴진스 (NewJeans)
+1팀|가수/아이돌|싸이 (PSY)
+1팀|가수/아이돌|블랙핑크
+1팀|보건의료|심폐소생술(CPR)
+1팀|보건의료|주사기
+1팀|보건의료|청진기
+2팀|영화|엑시트
+2팀|영화|스파이더맨
+2팀|영화|범죄도시
+2팀|드라마|더 글로리
+2팀|드라마|킹덤
+2팀|드라마|스카이캐슬
+2팀|배우|이광수
+2팀|배우|차은우
+2팀|배우|송강호
+2팀|가수/아이돌|방탄소년단(BTS)
+2팀|가수/아이돌|아이유
+2팀|가수/아이돌|세븐틴
+2팀|보건의료|휠체어
+2팀|보건의료|엑스레이 (X-ray)
+2팀|보건의료|구급차
+3팀|영화|타이타닉
+3팀|영화|해리포터
+3팀|영화|아바타
+3팀|드라마|태양의 후예
+3팀|드라마|슬기로운 의사생활
+3팀|드라마|응답하라 1988
+3팀|배우|조정석
+3팀|배우|전지현
+3팀|배우|최민식
+3팀|가수/아이돌|에스파 (aespa)
+3팀|가수/아이돌|임영웅
+3팀|가수/아이돌|아이브 (IVE)
+3팀|보건의료|혈압계
+3팀|보건의료|체온계
+3팀|보건의료|링거 (수액)
+4팀|영화|알라딘
+4팀|영화|아이언맨
+4팀|영화|나홀로 집에
+4팀|드라마|별에서 온 그대
+4팀|드라마|선재 업고 튀어
+4팀|드라마|이태원 클라쓰
+4팀|배우|김수현
+4팀|배우|박보검
+4팀|배우|손석구
+4팀|가수/아이돌|지코 (ZICO)
+4팀|가수/아이돌|트와이스
+4팀|가수/아이돌|르세라핌
+4팀|보건의료|목발
+4팀|보건의료|핀셋 (포셉)
+4팀|보건의료|반창고 (밴드)
+5팀|영화|매트릭스
+5팀|영화|쥬라기 공원
+5팀|영화|괴물
+5팀|드라마|환혼
+5팀|드라마|재벌집 막내아들
+5팀|드라마|눈물의 여왕
+5팀|배우|하정우
+5팀|배우|한소희
+5팀|배우|류승룡
+5팀|가수/아이돌|라이즈 (RIIZE)
+5팀|가수/아이돌|박진영 (JYP)
+5팀|가수/아이돌|투어스 (TWS)
+5팀|보건의료|치과 (스케일링)
+5팀|보건의료|인공호흡기
+5팀|보건의료|안약
+6팀|영화|곡성
+6팀|영화|아바타
+6팀|영화|극한직업
+6팀|드라마|사랑의 불시착
+6팀|드라마|무빙
+6팀|드라마|더 글로리
+6팀|배우|원빈
+6팀|배우|손예진
+6팀|배우|박서준
+6팀|가수/아이돌|소녀시대
+6팀|가수/아이돌|엑소
+6팀|가수/아이돌|임창정
+6팀|보건의료|깁스
+6팀|보건의료|시력검사
+6팀|보건의료|헌혈
+7팀|영화|신과함께
+7팀|영화|어벤져스
+7팀|영화|베테랑
+7팀|드라마|펜트하우스
+7팀|드라마|빈센조
+7팀|드라마|부부의 세계
+7팀|배우|유해진
+7팀|배우|전도연
+7팀|배우|이정재
+7팀|가수/아이돌|마마무
+7팀|가수/아이돌|에스파
+7팀|가수/아이돌|잇지(ITZY)
+7팀|보건의료|약국
+7팀|보건의료|건강검진
+7팀|보건의료|들것 (스트레쳐카)
+8팀|영화|관상
+8팀|영화|터미네이터
+8팀|영화|해운대
+8팀|드라마|구르미 그린 달빛
+8팀|드라마|호텔 델루나
+8팀|드라마|응답하라 1997
+8팀|배우|공유
+8팀|배우|김고은
+8팀|배우|유아인
+8팀|가수/아이돌|2PM
+8팀|가수/아이돌|레드벨벳
+8팀|가수/아이돌|지드래곤
+8팀|보건의료|소독약 (빨간약)
+8팀|보건의료|가글
+8팀|보건의료|마스크
+9팀|영화|타짜
+9팀|영화|국가대표
+9팀|영화|라라랜드
+9팀|드라마|시크릿 가든
+9팀|드라마|미스터 션샤인
+9팀|드라마|힘쎈여자 도봉순
+9팀|배우|김태리
+9팀|배우|남주혁
+9팀|배우|박은빈
+9팀|가수/아이돌|데이식스
+9팀|가수/아이돌|빅뱅
+9팀|가수/아이돌|비(Rain)
+9팀|보건의료|체중계
+9팀|보건의료|수술실
+9팀|보건의료|심전도 (EKG)
+10팀|영화|매드맥스
+10팀|영화|내부자들
+10팀|영화|마녀
+10팀|드라마|D.P. (디피)
+10팀|드라마|나의 아저씨
+10팀|드라마|김비서가 왜 그럴까
+10팀|배우|차승원
+10팀|배우|한지민
+10팀|배우|조진웅
+10팀|가수/아이돌|조용필
+10팀|가수/아이돌|악뮤 (AKMU)
+10팀|가수/아이돌|투애니원 (2NE1)
+10팀|보건의료|물리치료
+10팀|보건의료|수면마취
+10팀|보건의료|임신테스트기
+11팀|영화|이티 (E.T.)
+11팀|영화|킹스맨
+11팀|영화|설국열차
+11팀|드라마|대장금
+11팀|드라마|스위트홈
+11팀|드라마|킹덤
+11팀|배우|유재석
+11팀|배우|이광수
+11팀|배우|강동원
+11팀|가수/아이돌|지수 (블랙핑크)
+11팀|가수/아이돌|박재범
+11팀|가수/아이돌|선미
+11팀|보건의료|한의원 (침)
+11팀|보건의료|라식 (시력교정)
+11팀|보건의료|약사
+12팀|영화|광해
+12팀|영화|알라딘
+12팀|영화|마션
+12팀|드라마|도깨비
+12팀|드라마|오징어 게임
+12팀|드라마|워킹데드
+12팀|배우|이도현
+12팀|배우|류승범
+12팀|배우|송강
+12팀|가수/아이돌|에이티즈
+12팀|가수/아이돌|카라
+12팀|가수/아이돌|청하
+12팀|보건의료|응급실
+12팀|보건의료|MRI
+12팀|보건의료|수혈
+13팀|영화|킹콩
+13팀|영화|죠스
+13팀|영화|완벽한 타인
+13팀|드라마|상속자들
+13팀|드라마|선덕여왕
+13팀|드라마|오징어 게임
+13팀|배우|이경영
+13팀|배우|이선균
+13팀|배우|최우식
+13팀|가수/아이돌|워너원
+13팀|가수/아이돌|소녀시대
+13팀|가수/아이돌|브레이브걸스
+13팀|보건의료|진통제
+13팀|보건의료|콘택트렌즈
+13팀|보건의료|청력검사
+14팀|영화|범죄도시
+14팀|영화|아저씨
+14팀|영화|미션 임파서블
+14팀|드라마|스카이캐슬
+14팀|드라마|지옥
+14팀|드라마|내 남편과 결혼해줘
+14팀|배우|신하균
+14팀|배우|김우빈
+14팀|배우|전지현
+14팀|가수/아이돌|세븐틴
+14팀|가수/아이돌|슈퍼주니어
+14팀|가수/아이돌|다이나믹듀오
+14팀|보건의료|초음파
+14팀|보건의료|혈액형
+14팀|보건의료|구급상자
+15팀|영화|쏘우
+15팀|영화|건축학개론
+15팀|영화|아저씨
+15팀|드라마|추노
+15팀|드라마|동백꽃 필 무렵
+15팀|드라마|파리의 연인
+15팀|배우|설경구
+15팀|배우|윤여정
+15팀|배우|김수미
+15팀|가수/아이돌|H.O.T.
+15팀|가수/아이돌|샤이니
+15팀|가수/아이돌|백지영
+15팀|보건의료|건강보험증
+15팀|보건의료|영양제
+15팀|보건의료|심리상담
+`;
+
+    const slides = [];
+
+    slides.push({
+        type: 'intro',
+        html: `
+            <div class="full-bg"></div>
+            <div class="content-layer">
+                <p class="title-sub">조선대학교 PUSH 業 진로취업캠프 팀 빌딩 프로그램<br>2026년 08월 25일 (월)</p>
+                <h1 class="title-main">몸으로 말해요</h1>
+                <p class="text-accent" style="font-size: 2vw; font-weight: 700;">TEAM CHARADES GAME</p>
+            </div>
+            <div class="nav-hint">시작하려면 스페이스바 또는 우측 방향키를 누르세요</div>
+        `
+    });
+
+    slides.push({
+        type: 'rules',
+        html: `
+            <div class="content-layer">
+                <h2 class="section-title text-accent"><i class="fa-solid fa-gamepad"></i> 게임 룰 안내</h2>
+                <div class="divider"></div>
+                <p style="font-size: 3vw; font-weight: 700; margin-bottom: 3vh;">제시어를 보고 오직 '몸'으로만 설명하세요!</p>
+                <p class="section-desc">설명하는 사람은 절대 소리를 내거나 입모양을 보여선 안 됩니다.<br>도저히 모르겠다면 "패스!"를 외치고 다음 문제로 넘어가세요.</p>
+            </div>
+        `
+    });
+
+    const lines = rawData.trim().split('\n');
+    let currentTeam = "";
+
+    lines.forEach(line => {
+        const [team, category, keyword] = line.split('|');
+        if (!team || !category || !keyword) return;
+
+        if (team !== currentTeam) {
+            if (currentTeam !== "") {
+                slides.push({
+                    type: 'outro',
+                    html: `
+                        <div class="content-layer">
+                            <h2 style="color: #00FF9D; font-size: 8vw; font-weight: 900; margin-bottom: 2vh;">TIME OVER</h2>
+                            <p style="font-size: 3vw; font-weight: 700;">${currentTeam} 수고하셨습니다!</p>
+                        </div>
+                    `
+                });
+            }
+            slides.push({
+                type: 'ready',
+                html: `
+                    <div class="content-layer">
+                        <h2 style="font-size: 9vw; font-weight: 900;">${team} <span class="text-accent">준비!</span></h2>
+                        <p style="font-size: 3vw; margin-top: 2vh;">Are you ready?</p>
+                    </div>
+                `
+            });
+            currentTeam = team;
+        }
+
+        let fontSize = "10vw";
+        if (keyword.length > 10) fontSize = "7vw";
+        else if (keyword.length > 6) fontSize = "8.5vw";
+
+        slides.push({
+            type: 'game',
+            html: `
+                <div class="game-label">
+                    <span class="team-badge">${team}</span>
+                    <span class="label-divider">/</span>
+                    <span class="category-text">${category}</span>
+                </div>
+                <div class="content-layer">
+                    <h1 class="keyword-text" style="font-size: ${fontSize};">${keyword.replace('(', '<br><span style="font-size:0.5em; color:#aaa;">(').replace(')', ')</span>')}</h1>
+                </div>
+            `
+        });
+    });
+
+    if (currentTeam !== "") {
+        slides.push({
+            type: 'outro',
+            html: `
+                <div class="content-layer">
+                    <h2 style="color: #00FF9D; font-size: 8vw; font-weight: 900; margin-bottom: 2vh;">TIME OVER</h2>
+                    <p style="font-size: 3vw; font-weight: 700;">${currentTeam} 수고하셨습니다!</p>
+                </div>
+            `
+        });
+    }
+
+    slides.push({
+        type: 'end',
+        html: `
+            <div class="full-bg" style="background-image: url('https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=1974&auto=format&fit=crop');"></div>
+            <div class="content-layer">
+                <h1 class="title-main text-accent">수고하셨습니다!</h1>
+                <p class="title-sub" style="color:#fff;">조선대학교 PUSH 業 진로취업캠프</p>
+            </div>
+        `
+    });
+
+    let currentIndex = 0;
+    const container = document.getElementById('slide-container');
+    const counterDisplay = document.getElementById('slide-counter');
+
+    function renderSlide(index) {
+        container.style.opacity = 0;
+        
+        setTimeout(() => {
+            container.innerHTML = slides[index].html;
+            counterDisplay.innerText = `${index + 1} / ${slides.length}`;
+            container.style.opacity = 1;
+        }, 150); 
+    }
+
+    function nextSlide() {
+        if (currentIndex < slides.length - 1) {
+            currentIndex++;
+            renderSlide(currentIndex);
+        }
+    }
+
+    function prevSlide() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            renderSlide(currentIndex);
+        }
+    }
+
+    function toggleFullScreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            nextSlide();  
+        } else if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            prevSlide();
+        }
+    });
+
+    window.onload = () => {
+        renderSlide(currentIndex);
+    };
+
+</script>
+</body>
+</html>
